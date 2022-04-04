@@ -2,7 +2,6 @@ from tkinter import *
 import tkinter as tk
 
 
-
 class Application():
     def __init__(self):
         self.janela_principal = Tk()
