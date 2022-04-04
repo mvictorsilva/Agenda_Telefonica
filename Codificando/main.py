@@ -13,7 +13,7 @@ class Application():
     def tela(self):
         self.janela_principal.geometry('850x540')
         self.janela_principal.resizable(0, 0)
-        self.janela_principal.config(bg='black')
+        self.janela_principal.config(bg='#2F4F4F')
         self.janela_principal.title('Agenda Agora')
         self.janela_principal.iconbitmap('codificando/imagens/agenda.ico')
 
@@ -25,8 +25,8 @@ class Application():
         ###### Labels ######
         self.contatos_titulo = Label(self.janela_principal, 
                 text='Agenda Pessoal de Contatos',
-                fg='white',
-                bg='black',
+                fg='#000080',
+                bg='#2F4F4F',
                 font=("Righteous", 20)
                 )
 
@@ -64,17 +64,13 @@ class Application():
 
         ###### Rodando ######
         self.contatos_titulo.place(x=10,
-                                   y=5
-                                   )
+                                   y=5)
         self.caixa_pesquisa.place(x=600,
-                                  y=12
-                                  )
+                                  y=12)
         self.pesquisar_button.place(x=806,
-                                    y=11
-                                    )
+                                    y=11)
         self.contato_button.place(x=200,
-                                  y=60
-                                  )
+                                  y=60)
 
 
 Application()
