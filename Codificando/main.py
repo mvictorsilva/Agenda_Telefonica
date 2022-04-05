@@ -1,5 +1,8 @@
 from tkinter import *
 import tkinter as tk
+from awesometkinter import *
+import awesometkinter as atk
+from tkinter import ttk
 
 
 class Application():
@@ -7,16 +10,21 @@ class Application():
         self.janela_principal = Tk()
         self.imagens()
         self.tela()
+        self.frames_da_tela()
         self.labels()
+        self.caixas_de_texto()
         self.botoes()
+        self.tabela_de_contatos()
         self.janela_principal.mainloop()
 
 
     def imagens(self):
+        # Importando imagens
         self.lupa = PhotoImage(file="Codificando/imagens/lupa.png")
 
 
     def tela(self):
+        # Conffigurações da janela
         self.janela_principal.geometry('850x540')
         self.janela_principal.resizable(0, 0)
         self.janela_principal.config(bg='#2F4F4F')
@@ -24,20 +32,56 @@ class Application():
         self.janela_principal.iconbitmap('codificando/imagens/agenda.ico')
 
 
+    def frames_da_tela(self):
+        # Criação dos frames
+        self.primeiro_frame = atk.Frame3d(self.janela_principal,
+                bg='#2F4F4F')
+        self.segundo_frame = atk.Frame3d(self.janela_principal,
+                bg='#2F4F4F')
+
+        # Posição dos frames
+        self.primeiro_frame.place(x=10, y=60, width=830, height=230)
+        self.segundo_frame.place(x=10, y=295, width=830, height=240)
+
+
     def labels(self):
+        # Titulo da janela na barra de menu
+        self.contatos_titulo = Label(self.janela_principal, 
+                text='Agenda Telefônica',
+                fg='white',
+                bg='#2F4F4F',
+                font=("Righteous", 20)
+                )
+
+        #Configurando a parte principal da tela
+        self.nome_label = Label(self.primeiro_frame,
+                text='Nome:',
+                font=('Trebuchet', 15, 'bold'),
+                fg='white',
+                bg='#2F4F4F')
+
+        # Titulo da treeview do segundo frame
+        self.todos_contatos_label = Label(self.segundo_frame,
+                text='Todos os contatos:',
+                font=('trebuchet', 15, 'bold'),
+                fg='white',
+                bg='#2F4F4F')
+        
+        # Chamando todas as labels para a janela
+        self.contatos_titulo.place(x=10, y=5)
+        self.nome_label.place(x=10, y=10)
+        self.todos_contatos_label.place(x=10, y=20)
+
+
+    def caixas_de_texto(self):
+        # Função que apaga a mensagem de dita da caixa de texto
         def on_click(event):
             self.caixa_pesquisa.configure(state=NORMAL)
             self.caixa_pesquisa.delete(0, END)
 
             self.caixa_pesquisa.unbind('<Button-1>', on_click)
-        
-        self.contatos_titulo = Label(self.janela_principal, 
-            text='Agenda Telefônica',
-            fg='white',
-            bg='#2F4F4F',
-            font=("Righteous", 20)
-            )
 
+        # Caixa de pesquisa da barra de menu
         self.caixa_pesquisa = Entry(self.janela_principal,
                 font=('Times', 15),
                 fg='gray',
@@ -46,41 +90,72 @@ class Application():
                 )
         self.caixa_pesquisa.insert(0, "Buscar...")
         self.caixa_pesquisa.configure(state=DISABLED)
-        
         on_click_id = self.caixa_pesquisa.bind('<Button-1>', on_click)
-        
-        self.contatos_titulo.place(x=10,
-                                   y=5)
+
+        # Chamando as caxas de texto
         self.caixa_pesquisa.place(x=600,
                                   y=12)
 
 
-    def botoes(self):               
+    def botoes(self):
+        # Botão da lupa na barra de menu    
         self.pesquisar_button = Button(self.janela_principal,
                 image=self.lupa,
                 bg='#2F4F4F',
                 width=25,
                 height=25
                 )
-        self.contato_button = Button(self.janela_principal,
+
+        # Botão de adiconar novo contato
+        self.adicionar_button = Button(self.primeiro_frame,
                 text='Adicionar',
                 font=('verdana', 10, 'bold'),
                 fg='white',
                 bg='#2F4F4F'
                 )
-        self.alterar_button = Button(self.janela_principal,
+
+        # Botão de editar contato
+        self.alterar_button = Button(self.primeiro_frame,
                 text='Alterar',
                 font=('verdana', 10, 'bold'),
                 fg='white',
                 bg='#3F4F4F'
                 )
-        
-        self.pesquisar_button.place(x=806,
-                                    y=11)
-#        self.contato_button.place(x=200,
-#                                  y=60)
-#        self.alterar_button.place(x=200,
-#                                  y=70)
 
+        # Botão remover contatos
+        self.remover_button = Button(self.segundo_frame,
+                text='Remover',
+                font=('verdana', 10, 'bold'),
+                fg='white',
+                bg='#FF5757')
+        
+        # Chamando os botões na tela
+        self.pesquisar_button.place(x=805, y=11)
+        self.adicionar_button.place(x=200, y=60)
+        self.alterar_button.place(x=20, y=70)
+        self.remover_button.place(x=730, y=15)
+
+
+    def tabela_de_contatos(self):
+        # Criando a treeview
+        self.tabela = ttk.Treeview(self.segundo_frame,
+                height=3,
+                columns=('col1', 'col2', 'col3', 'col4'))
+        
+        # Nomeando a tabela
+        self.tabela.heading('#0', text='Nome')
+        self.tabela.heading('#1', text='Número 1')
+        self.tabela.heading('#2', text='Número 2')
+        self.tabela.heading('#3', text='Número 3')
+        
+        # Especificando a tabela
+        self.tabela.column('#0', width=200)
+        self.tabela.column('#1', width=205)
+        self.tabela.column('#2', width=205)
+        self.tabela.column('#3', width=205)
+
+        # Especificando o tamanho no frame
+        self.tabela.place(x=10, y=50, width=810, height=180)
+        
 
 Application()
