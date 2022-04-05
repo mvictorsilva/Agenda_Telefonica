@@ -66,10 +66,18 @@ class Application():
                 font=('trebuchet', 15, 'bold'),
                 fg='white',
                 bg='#2F4F4F')
+
+        # Titulo dos entry que recebe os números de telefones
+        self.telefones_label = Label(self.primeiro_frame,
+                text='Telefones',
+                font=('trebuched', 15, 'bold'),
+                fg='white',
+                bg='#2F4F4F')
         
         # Chamando todas as labels para a janela
         self.contatos_titulo.place(x=10, y=5)
-        self.nome_label.place(x=10, y=10)
+        self.nome_label.place(x=10, y=20)
+        self.telefones_label.place(x=370, y=70)
         self.todos_contatos_label.place(x=10, y=20)
 
 
@@ -92,9 +100,36 @@ class Application():
         self.caixa_pesquisa.configure(state=DISABLED)
         on_click_id = self.caixa_pesquisa.bind('<Button-1>', on_click)
 
+        # Caixa de texto que recebe o nome
+        self.nome_entry = Entry(self.primeiro_frame,
+                font=('Times', 15),
+                fg='gray',
+                borderwidth=2,
+                relief='raised')
+
+        # Adicionando as três caixas de texto que receberão os números de telefone
+        self.primeiro_numero = Entry(self.primeiro_frame,
+                font=('Times', 15),
+                fg='gray',
+                borderwidth=2,
+                relief='raised')
+        self.segundo_numero = Entry(self.primeiro_frame,
+                font=('Times', 15),
+                fg='gray',
+                borderwidth=2,
+                relief='raised')
+        self.terceiro_numero = Entry(self.primeiro_frame,
+                font=('Times', 15),
+                fg='gray',
+                borderwidth=2,
+                relief='raised')
+
         # Chamando as caxas de texto
-        self.caixa_pesquisa.place(x=600,
-                                  y=12)
+        self.caixa_pesquisa.place(x=600, y=12)
+        self.nome_entry.place(x=80, y=20, width=300)
+        self.primeiro_numero.place(x=20, y=110, width=250)
+        self.segundo_numero.place(x=290, y=110, width=250)
+        self.terceiro_numero.place(x=560, y=110, width=250)
 
 
     def botoes(self):
@@ -108,18 +143,18 @@ class Application():
 
         # Botão de adiconar novo contato
         self.adicionar_button = Button(self.primeiro_frame,
-                text='Adicionar',
+                text='Salvar',
                 font=('verdana', 10, 'bold'),
                 fg='white',
-                bg='#2F4F4F'
+                bg='#5271FF'
                 )
 
         # Botão de editar contato
         self.alterar_button = Button(self.primeiro_frame,
-                text='Alterar',
+                text='Editar',
                 font=('verdana', 10, 'bold'),
                 fg='white',
-                bg='#3F4F4F'
+                bg='#5271FF'
                 )
 
         # Botão remover contatos
@@ -131,8 +166,8 @@ class Application():
         
         # Chamando os botões na tela
         self.pesquisar_button.place(x=805, y=11)
-        self.adicionar_button.place(x=200, y=60)
-        self.alterar_button.place(x=20, y=70)
+        self.adicionar_button.place(x=330, y=170)
+        self.alterar_button.place(x=440, y=170)
         self.remover_button.place(x=730, y=15)
 
 
