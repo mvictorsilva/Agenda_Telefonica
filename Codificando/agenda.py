@@ -3,6 +3,7 @@ import tkinter as tk
 from awesometkinter import *
 import awesometkinter as atk
 from tkinter import ttk
+import sqlite3
 
 class funcoes():
     def limpar_caixa(self):
@@ -48,6 +49,31 @@ class funcoes():
         self.terceiro_numero.configure(state=DISABLED)
         on_click_id_4 = self.terceiro_numero.bind('<Button-1>', on_click)
 
+    def conectar_ao_bd(self):
+            self.conectar = sqlite3.connect('clientes.bd')
+            self.cursor = self.conectar.cursor()
+            print('Conectando ao banco de dados')
+
+    def desconectar_ao_bd(self):
+            self.conectar.close()
+            print('Desconectando ao banco de dados')
+
+    def criar_tabela(self):
+            self.conectar_ao_bd()
+            self.cursor.execute("""
+                create table if not exists contatos (
+                        ID int not null primary key,
+                        Nome_contato varchar(50) not null,
+                        telefone_um int(13) not null,
+                        telefone_dois int(13),
+                        telefone_tres int(13)
+                );
+            """)
+            self.conectar.commit()
+            print('Banco de dados criado')
+            self.desconectar_ao_bd()
+
+
 class Application(funcoes):
     def __init__(self):
         self.janela_principal = Tk()
@@ -58,6 +84,7 @@ class Application(funcoes):
         self.caixas_de_texto()
         self.botoes()
         self.tabela_de_contatos()
+        self.criar_tabela()
         self.janela_principal.mainloop()
 
 
