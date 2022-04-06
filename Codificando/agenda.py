@@ -50,7 +50,7 @@ class funcoes():
         on_click_id_4 = self.terceiro_numero.bind('<Button-1>', on_click)
 
     def conectar_ao_bd(self):
-            self.conectar = sqlite3.connect('clientes.bd')
+            self.conectar = sqlite3.connect('cliente.db')
             self.cursor = self.conectar.cursor()
             print('Conectando ao banco de dados')
 
@@ -61,8 +61,8 @@ class funcoes():
     def criar_tabela(self):
             self.conectar_ao_bd()
             self.cursor.execute("""
-                create table if not exists contatos (
-                        ID int not null primary key,
+                create table if not exists contato (
+                        id integer not null primary key,
                         Nome_contato varchar(50) not null,
                         telefone_um int(13) not null,
                         telefone_dois int(13),
@@ -71,6 +71,41 @@ class funcoes():
             """)
             self.conectar.commit()
             print('Banco de dados criado')
+            self.desconectar_ao_bd()
+
+    def adicionar_cliente(self):
+            self.codigo_id = self.codigo_entry.get()
+            self.inserir_nome_ctt = self.nome_entry.get()
+            self.inserir_num_um = self.primeiro_numero.get()
+            self.inserir_num_dois = self.segundo_numero.get()
+            self.inserir_num_tres = self.terceiro_numero.get()
+            self.conectar_ao_bd()
+
+            self.cursor.execute("""
+                insert into contato (Nome_contato, telefone_um, telefone_dois, telefone_tres)
+                values (?, ?, ?, ?)
+                """,
+                (self.inserir_nome_ctt,
+                self.inserir_num_um,
+                self.inserir_num_dois,
+                self.inserir_num_tres))
+
+            self.conectar.commit()
+            self.desconectar_ao_bd()
+            self.monstrar_na_tabela()
+            self.limpar_caixa()
+
+    def monstrar_na_tabela(self):
+            self.tabela.delete(*self.tabela.get_children())
+            self.conectar_ao_bd()
+            dados = self.cursor.execute("""
+                select id, Nome_contato, telefone_um, telefone_dois, telefone_tres from contato
+                order by Nome_contato asc; 
+                """)
+
+            for i in dados:
+                    self.tabela.insert("", END, values=i)
+
             self.desconectar_ao_bd()
 
 
@@ -85,6 +120,7 @@ class Application(funcoes):
         self.botoes()
         self.tabela_de_contatos()
         self.criar_tabela()
+        self.monstrar_na_tabela()
         self.janela_principal.mainloop()
 
 
@@ -152,6 +188,13 @@ class Application(funcoes):
 
 
     def caixas_de_texto(self):
+        self.codigo_entry = Entry(self.primeiro_frame,
+                font=('Times', 15),
+                fg='#000000',
+                borderwidth=2,
+                relief="raised"
+                )
+        self.codigo_entry.place(x=550, y=20, width=100)
         # Função que apaga a mensagem de dita da caixa de texto
         def on_click(event):
             self.caixa_pesquisa.configure(state=NORMAL)
@@ -250,6 +293,7 @@ class Application(funcoes):
 
         # Botão de adiconar novo contato
         self.salvar_button = Button(self.primeiro_frame,
+                command=self.adicionar_cliente,
                 text='Salvar',
                 font=('verdana', 10, 'bold'),
                 fg='white',
@@ -298,19 +342,21 @@ class Application(funcoes):
         # Criando a treeview
         self.tabela = ttk.Treeview(self.segundo_frame,
                 height=3,
-                columns=('col1', 'col2', 'col3', 'col4'))
+                columns=('col1', 'col2', 'col3', 'col4', 'col5'))
         
         # Nomeando a tabela
-        self.tabela.heading('#0', text='Nome')
-        self.tabela.heading('#1', text='Número 1')
-        self.tabela.heading('#2', text='Número 2')
-        self.tabela.heading('#3', text='Número 3')
+        self.tabela.heading('#0', text='ID')
+        self.tabela.heading('#1', text='Nome')
+        self.tabela.heading('#2', text='Número 1')
+        self.tabela.heading('#3', text='Número 2')
+        self.tabela.heading('#4', text='Número 3')
         
         # Especificando a tabela
-        self.tabela.column('#0', width=200)
-        self.tabela.column('#1', width=205)
-        self.tabela.column('#2', width=205)
-        self.tabela.column('#3', width=205)
+        self.tabela.column('#0', width=70, minwidth=70)
+        self.tabela.column('#1', width=180, minwidth=180)
+        self.tabela.column('#2', width=180, minwidth=180)
+        self.tabela.column('#3', width=180, minwidth=180)
+        self.tabela.column('#4', width=180, minwidth=180)
 
         # Criando a ScrollBar
         self.barra_de_rolagem = SimpleScrollbar(self.segundo_frame,
