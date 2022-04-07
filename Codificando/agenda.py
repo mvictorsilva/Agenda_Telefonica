@@ -90,7 +90,7 @@ class BackEnd():
                 order by Nome_contato asc; 
                 """)
 
-            # Inseri os daados na tabela
+            # Inseri os dados na tabela
             for i in dados:
                     self.tabela.insert("", END, values=i)
 
