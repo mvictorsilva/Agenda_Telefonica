@@ -150,6 +150,33 @@ class BackEnd():
         self.mostrar_na_tabela()
         self.limpar_caixa()
 
+    # Criando a função que busca e mostra o que o usuario pesquisar pelo nome
+    def pesquisar(self):
+        self.conectar_ao_bd()
+        self.tabela.delete(*self.tabela.get_children())
+
+        # Seleciona os dados que serão pesquisados
+        self.caixa_pesquisa.insert(END, '%')
+        pesquisa = self.caixa_pesquisa.get()
+        self.cursor.execute("""
+            select id, Nome_contato,
+            telefone_um,
+            telefone_dois,
+            telefone_tres
+            from contato
+            where Nome_contato like
+            '%s' order by Nome_contato asc
+            """
+            % pesquisa
+        )
+
+        buscar_cliente = self.cursor.fetchall()
+        for b in buscar_cliente:
+                self.tabela.insert("", END, values=b)
+
+        self.limpar_caixa()
+        self.desconectar_ao_bd()
+
 class FrontEnd(BackEnd):
     def __init__(self):
         self.janela_principal = Tk()
@@ -309,6 +336,7 @@ class FrontEnd(BackEnd):
     def botoes(self):
         # Botão da lupa na barra de menu    
         self.pesquisar_button = Button(self.janela_principal,
+                command=self.pesquisar,
                 image=self.lupa,
                 bg='#2F4F4F',
                 width=25,
