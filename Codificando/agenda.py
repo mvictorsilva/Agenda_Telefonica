@@ -85,10 +85,12 @@ class funcoes():
                 insert into contato (Nome_contato, telefone_um, telefone_dois, telefone_tres)
                 values (?, ?, ?, ?)
                 """,
-                (self.inserir_nome_ctt,
+                (
+                self.inserir_nome_ctt,
                 self.inserir_num_um,
                 self.inserir_num_dois,
-                self.inserir_num_tres))
+                self.inserir_num_tres)
+                )
 
             self.conectar.commit()
             self.desconectar_ao_bd()
@@ -194,7 +196,7 @@ class Application(funcoes):
                 borderwidth=2,
                 relief="raised"
                 )
-        self.codigo_entry.place(x=550, y=20, width=100)
+        #self.codigo_entry.place(x=550, y=20, width=100)
         # Função que apaga a mensagem de dita da caixa de texto
         def on_click(event):
             self.caixa_pesquisa.configure(state=NORMAL)
@@ -345,26 +347,22 @@ class Application(funcoes):
                 columns=('col1', 'col2', 'col3', 'col4', 'col5'))
         
         # Nomeando a tabela
-        self.tabela.heading('#0', text='ID')
-        self.tabela.heading('#1', text='Nome')
-        self.tabela.heading('#2', text='Número 1')
-        self.tabela.heading('#3', text='Número 2')
-        self.tabela.heading('#4', text='Número 3')
+        self.tabela.heading('#0', text='')
+        self.tabela.heading('#1', text='ID')
+        self.tabela.heading('#2', text='Nome')
+        self.tabela.heading('#3', text='Número 1')
+        self.tabela.heading('#4', text='Número 2')
+        self.tabela.heading('#5', text='Número 3')
         
         # Especificando a tabela
-        self.tabela.column('#0', width=70, minwidth=70)
-        self.tabela.column('#1', width=180, minwidth=180)
+        self.tabela.column('#0', width=1)
+        self.tabela.column('#1', width=70, minwidth=70)
         self.tabela.column('#2', width=180, minwidth=180)
         self.tabela.column('#3', width=180, minwidth=180)
         self.tabela.column('#4', width=180, minwidth=180)
-
-        # Criando a ScrollBar
-        self.barra_de_rolagem = SimpleScrollbar(self.segundo_frame,
-                orient=VERTICAL)
-        self.tabela.configure(yscroll=self.barra_de_rolagem.set)
+        self.tabela.column('#5', width=180, minwidth=180)
 
         # Especificando o tamanho no frame
-        self.tabela.place(x=10, y=50, width=790, height=180)
-        self.barra_de_rolagem.place(x=799, y=50, width=17, height=180)
+        self.tabela.place(x=15, y=50, width=800, height=180)
 
 Application()
