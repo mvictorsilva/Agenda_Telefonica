@@ -1,4 +1,4 @@
-# Projeto_agenda
+# Agenda_Telefônica
  Criação de uma agenda telefonica em Python e SQL.
 
  Bibliotecas usadas:
