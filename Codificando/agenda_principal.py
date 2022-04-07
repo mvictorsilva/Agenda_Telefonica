@@ -5,7 +5,7 @@ import awesometkinter as atk
 from tkinter import ttk
 import sqlite3
 
-class funcoes():
+class BackEnd():
     # Função que limpa as caixas de entrada
     def limpar_caixa(self):
         self.caixa_pesquisa.delete(0, END)
@@ -124,7 +124,33 @@ class funcoes():
         self.limpar_caixa()
         self.mostrar_na_tabela()
 
-class Application(funcoes):
+    # Função que altera dados na tabela
+    def editar_coluna(self):
+        self.variaveis()
+        self.conectar_ao_bd()
+
+        self.cursor.execute("""
+            update contato set Nome_contato = ?,
+            telefone_um = ?,
+            telefone_dois = ?,
+            telefone_tres = ?
+            where id = ?
+        """,
+        (self.inserir_nome_ctt,
+        self.inserir_num_um,
+        self.inserir_num_dois,
+        self.inserir_num_tres,
+        self.codigo_id
+        ))
+
+        # 'Commit' executa os comendos
+        self.conectar.commit()
+
+        self.desconectar_ao_bd()
+        self.mostrar_na_tabela()
+        self.limpar_caixa()
+
+class FrontEnd(BackEnd):
     def __init__(self):
         self.janela_principal = Tk()
         self.imagens()
@@ -298,6 +324,7 @@ class Application(funcoes):
 
         # Botão de editar contato
         self.editar_button = Button(self.primeiro_frame,
+                command=self.editar_coluna,
                 text='Editar',
                 font=('verdana', 10, 'bold'),
                 fg='#FFFFFF',
@@ -364,4 +391,4 @@ class Application(funcoes):
         # Especificando o tamanho no frame
         self.tabela.place(x=15, y=50, width=800, height=180)
 
-Application()
+FrontEnd()
