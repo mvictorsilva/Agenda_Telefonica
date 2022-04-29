@@ -5,6 +5,7 @@ import awesometkinter as atk
 from tkinter import ttk
 import sqlite3
 
+
 class BackEnd():
     # Função que limpa as caixas de entrada
     def limpar_caixa(self):
@@ -20,16 +21,19 @@ class BackEnd():
 
         self.terceiro_numero.delete(0, END)
 
+
     # Função que cria e conecta ao banco de dados no computador
     def conectar_ao_bd(self):
             self.conectar = sqlite3.connect('cliente.db')
             self.cursor = self.conectar.cursor()
             print('Conectando ao banco de dados')
 
+
     # Função que desconecta o banco de dados depois que cada processo acaba
     def desconectar_ao_bd(self):
             self.conectar.close()
             print('Desconectando ao banco de dados')
+
 
     # Criando a tabela de dados no banco de dados
     def criar_tabela(self):
@@ -49,6 +53,7 @@ class BackEnd():
             print('Banco de dados criado')
             self.desconectar_ao_bd()
 
+
     # Criando as variaveis que receberão os dados das caixas de texto (entry)
     def variaveis(self):
             self.codigo_id = self.codigo_entry.get()
@@ -56,6 +61,7 @@ class BackEnd():
             self.inserir_num_um = self.primeiro_numero.get()
             self.inserir_num_dois = self.segundo_numero.get()
             self.inserir_num_tres = self.terceiro_numero.get()
+
 
     # Função que cria inseri os dados recebidos das variaveis pelo usuário
     def adicionar_cliente(self):
@@ -78,6 +84,7 @@ class BackEnd():
             self.mostrar_na_tabela()
             self.limpar_caixa()
 
+
     # Função que pega os dados no banco de dados e mostra na tabela
     def mostrar_na_tabela(self):
             # Delete os dados da tabela antes para não trazer informação repetida
@@ -96,6 +103,7 @@ class BackEnd():
 
             self.desconectar_ao_bd()
 
+
     # 'event' siginifica que ele vai imteragir com outro código no caso da tabela
     def selecionar(self, event):
             self.limpar_caixa()
@@ -108,6 +116,7 @@ class BackEnd():
                     self.primeiro_numero.insert(END, col3)
                     self.segundo_numero.insert(END, col4)
                     self.terceiro_numero.insert(END, col4)
+
 
     # Função que deleta um contato da tabela
     def deletar(self):
@@ -123,6 +132,7 @@ class BackEnd():
         self.desconectar_ao_bd()
         self.limpar_caixa()
         self.mostrar_na_tabela()
+
 
     # Função que altera dados na tabela
     def editar_coluna(self):
@@ -150,6 +160,7 @@ class BackEnd():
         self.mostrar_na_tabela()
         self.limpar_caixa()
 
+
     # Criando a função que busca e mostra o que o usuario pesquisar pelo nome
     def pesquisar(self):
         self.conectar_ao_bd()
@@ -176,6 +187,7 @@ class BackEnd():
 
         self.limpar_caixa()
         self.desconectar_ao_bd()
+
 
 class FrontEnd(BackEnd):
     def __init__(self):
@@ -418,5 +430,6 @@ class FrontEnd(BackEnd):
 
         # Especificando o tamanho no frame
         self.tabela.place(x=15, y=50, width=800, height=180)
+
 
 FrontEnd()
